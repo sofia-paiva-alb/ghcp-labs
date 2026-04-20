@@ -1,7 +1,9 @@
-# Lab 1 — Advanced Python Unit Testing with GitHub Copilot
+# Lab 02 — Testing with Copilot
 
-**Duration:** 70 minutes  
-**Prerequisites:** Python 3.10+, VS Code with GitHub Copilot, basic pytest knowledge
+**Duration:** ~1 hour  
+**SDLC Phase:** Test  
+**Autonomy Level:** 🟢 Human directs, Copilot generates  
+**Prerequisites:** Lab 01 completed, Python 3.10+, VS Code with GitHub Copilot
 
 ---
 

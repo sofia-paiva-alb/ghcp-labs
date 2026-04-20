@@ -1,7 +1,9 @@
-# Lab 6 — Agent Mode
+# Lab 06 — Agent Mode
 
 **Duration:** ~1 hour  
-**Prerequisites:** Python 3.10+, VS Code with GitHub Copilot (Agent Mode enabled)
+**SDLC Phase:** Code + Test + Debug (Autonomous)  
+**Autonomy Level:** 🔴 Human approves, Agent implements  
+**Prerequisites:** Lab 05 completed, Python 3.10+, VS Code with GitHub Copilot (Agent Mode enabled)
 
 ---
 

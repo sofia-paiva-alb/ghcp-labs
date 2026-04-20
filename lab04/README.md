@@ -1,7 +1,9 @@
-# Lab 4 — Knowledge Bases & Indexed Repos
+# Lab 04 — Context Engineering
 
 **Duration:** ~1 hour  
-**Prerequisites:** Python 3.10+, VS Code with GitHub Copilot
+**SDLC Phase:** Cross-cutting (Standards & Conventions)  
+**Autonomy Level:** 🟡 Human configures, Copilot follows rules  
+**Prerequisites:** Lab 03 completed, Python 3.10+, VS Code with GitHub Copilot
 
 ---
 

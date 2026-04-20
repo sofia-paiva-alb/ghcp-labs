@@ -1,7 +1,9 @@
-# Lab 7 — Code Security and More
+# Lab 07 — Security in the SDLC
 
 **Duration:** ~1 hour  
-**Prerequisites:** Python 3.10+, VS Code with GitHub Copilot, [HVE Core](https://marketplace.visualstudio.com/items?itemName=ise-hve-essentials.hve-core) extension (optional)
+**SDLC Phase:** Security Gate  
+**Autonomy Level:** 🔴 Agent scans, enforces, gates  
+**Prerequisites:** Lab 06 completed, Python 3.10+, VS Code with GitHub Copilot, [HVE Core](https://marketplace.visualstudio.com/items?itemName=ise-hve-essentials.hve-core) extension (optional)
 
 ---
 

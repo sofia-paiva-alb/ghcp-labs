@@ -1,7 +1,9 @@
-# Lab 2 — Debugging, Troubleshooting & Documentation
+# Lab 03 — Debugging & Troubleshooting
 
-**Duration:** ~1 hour
-**Prerequisites:** Python 3.10+, VS Code with GitHub Copilot
+**Duration:** ~1 hour  
+**SDLC Phase:** Debug  
+**Autonomy Level:** 🟡 Human points, Copilot fixes  
+**Prerequisites:** Lab 02 completed, Python 3.10+, VS Code with GitHub Copilot
 
 ---
 
