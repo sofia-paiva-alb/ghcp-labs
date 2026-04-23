@@ -39,18 +39,18 @@ class TestNotifyCustomer:
         # 3. Call await notify_customer(order, "Your order is confirmed!", session=mock_session)
         # 4. Assert result is True
         # 5. Assert mock_session.post was awaited once with correct URL and JSON
-        pass
+        pytest.skip("TODO: implement this test")
 
     @pytest.mark.asyncio
     async def test_failed_notification_non_200(self):
         # TODO:
         # 1. Same setup but set status = 500
         # 2. Assert result is False
-        pass
+        pytest.skip("TODO: implement this test")
 
     @pytest.mark.asyncio
     async def test_network_error_returns_false(self):
         # TODO:
         # 1. Make mock_session.post.side_effect = aiohttp.ClientError()
         # 2. Assert result is False
-        pass
+        pytest.skip("TODO: implement this test")

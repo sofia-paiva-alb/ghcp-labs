@@ -14,9 +14,9 @@
 | **1** | Mocking HTTP & DB | 10 min | Chat `/tests` + inline |
 | **2** | Fixtures & Parametrize | 15 min | Chat + inline suggestions |
 | **3** | Async with `AsyncMock` | 15 min | Chat with explicit prompt |
-| **4** | Coverage gap fill | 10 min | Agent Mode (VS Code) + CLI `task` agent |
+| **4** | Coverage gap fill | 10 min | Agent Mode (VS Code) + `copilot` CLI |
 | **5** | CI gate + Agentic Workflows | 10 min | GitHub Actions + `gh aw` |
-| **6** | GitHub Copilot CLI for testing | 10 min | `gh copilot explain` / `suggest` / `task` |
+| **6** | GitHub Copilot CLI for testing | 10 min | `copilot` interactive + programmatic |
 | **7** | E2E testing with MCP servers | 15 min | Playwright MCP + Agent Mode |
 
 ---
@@ -165,9 +165,9 @@ pytest tests/ --cov=order_processor --cov-report=term-missing -v
 1. **Read the report** — which lines/functions are still uncovered?
 2. **Use Copilot Agent Mode** (VS Code) — open Agent Mode and prompt:
    > "Run pytest with coverage, identify uncovered lines in order_processor.py, and write tests to cover them."
-3. **Or use the CLI task agent:**
+3. **Or use GitHub Copilot CLI:**
    ```bash
-   gh copilot task "Run pytest --cov on this project, find uncovered lines, and add tests"
+   copilot -p "Run pytest --cov on this project, find uncovered lines, and add tests" --allow-tool='shell(pytest)' --allow-tool='write'
    ```
 4. Re-run coverage and aim for **80%+**
 
@@ -218,54 +218,49 @@ gh aw run improve-tests
 
 ## Part 6 — GitHub Copilot CLI for Testing (10 min)
 
-So far you've used Copilot inside VS Code. Now let's use it **from the terminal** with the GitHub CLI.
+So far you've used Copilot inside VS Code. Now let's use it **from the terminal** with **GitHub Copilot CLI** — a standalone AI agent that runs directly in your terminal.
+
+> **Note:** The old `gh copilot` extension is retired. It has been replaced by **GitHub Copilot CLI** (the `copilot` command). See [About GitHub Copilot CLI](https://docs.github.com/en/copilot/concepts/agents/copilot-cli).
 
 ### Setup
 
 ```bash
-# Install the Copilot CLI extension (requires gh CLI)
-gh extension install github/gh-copilot
+# Install GitHub Copilot CLI (see https://docs.github.com/en/copilot/how-tos/set-up/install-copilot-cli)
+# On macOS:
+brew install gh-copilot
+
+# On Windows (winget):
+winget install GitHub.CopilotCLI
 
 # Verify
-gh copilot --help
+copilot --version
 ```
 
-### 6a: Explain — understand unfamiliar test patterns (2 min)
+### 6a: Interactive mode — understand & explore (3 min)
 
-Use `gh copilot explain` to understand code without leaving the terminal:
+Start an interactive session and ask Copilot to explain unfamiliar patterns:
 
 ```bash
-gh copilot explain "What does @patch('order_processor.requests.post') do and why not @patch('requests.post')?"
+copilot
 ```
 
-Try another:
+Once inside the interactive session, try:
 
-```bash
-gh copilot explain "What does mock_session.post.return_value.__aenter__.return_value.status = 200 mean in Python?"
+```
+What does @patch('order_processor.requests.post') do and why not @patch('requests.post')?
+```
+
+```
+What does mock_session.post.return_value.__aenter__.return_value.status = 200 mean in Python?
 ```
 
 **When to use:** Onboarding to a new codebase, understanding unfamiliar patterns, quick reference.
 
-### 6b: Suggest — get the right command (3 min)
+Use `Shift+Tab` to switch to **plan mode** for multi-step tasks.
 
-You know *what* you want but not the exact command:
+### 6b: Programmatic mode — autonomous test generation (5 min)
 
-```bash
-# How do I run only tests that failed last time?
-gh copilot suggest "run only previously failed pytest tests"
-
-# How do I see coverage for just one function?
-gh copilot suggest "run pytest coverage for only the validate_order function in order_processor.py"
-
-# How do I create a PR from the terminal?
-gh copilot suggest "create a draft pull request titled 'Add unit tests' from current branch"
-```
-
-Copilot will ask you to pick the command type (shell, git, or gh) then generate the exact command. You can run it directly.
-
-### 6c: Task — autonomous test generation (5 min)
-
-`gh copilot task` is the CLI equivalent of Agent Mode. Give it a goal and it works autonomously:
+Pass a single prompt directly on the command line. Copilot completes the task and exits.
 
 **Step 1:** Check your current coverage gaps:
 
@@ -273,10 +268,10 @@ Copilot will ask you to pick the command type (shell, git, or gh) then generate 
 pytest tests/ --cov=order_processor --cov-report=term-missing -v
 ```
 
-**Step 2:** Ask Copilot to fill them:
+**Step 2:** Ask Copilot CLI to fill them:
 
 ```bash
-gh copilot task "Look at lab02/order_processor.py. The functions load_order() and charge_customer() need direct unit tests. Write them in lab02/tests/test_cli_generated.py using in-memory SQLite for DB and unittest.mock.patch for HTTP calls."
+copilot -p "Look at lab02/order_processor.py. The functions load_order() and charge_customer() need direct unit tests. Write them in lab02/tests/test_cli_generated.py using in-memory SQLite for DB and unittest.mock.patch for HTTP calls." --allow-tool='shell(pytest)' --allow-tool='write'
 ```
 
 **Step 3:** Verify the generated tests pass:
@@ -288,16 +283,28 @@ pytest tests/ --cov=order_processor --cov-report=term-missing -v
 **Step 4:** If coverage is still below target, iterate:
 
 ```bash
-gh copilot task "Coverage is still below 80%. Check the remaining uncovered lines and add tests."
+copilot -p "Coverage is still below 80%. Check the remaining uncovered lines and add tests." --allow-tool='shell(pytest)' --allow-tool='write'
 ```
+
+### 6c: Useful slash commands (2 min)
+
+In the interactive session, try these slash commands:
+
+| Command | Purpose |
+|---------|----------|
+| `/model` | Switch the model (e.g., Claude Sonnet 4.5, GPT-4.1) |
+| `/mcp` | List configured MCP servers |
+| `/compact` | Manually compress context for long sessions |
+| `/context` | Show token usage breakdown |
 
 <details>
 <summary>💡 Hints (click to expand)</summary>
 
-- `explain` is best for understanding patterns — give it a specific code snippet or concept
-- `suggest` asks you to pick shell/git/gh command type — pick "shell" for pytest commands
-- `task` works best with specific, well-scoped instructions — include file paths and function names
-- If `task` output isn't right, refine your prompt with more context
+- Interactive mode is best for exploration — start with `copilot` and have a conversation
+- Programmatic mode (`-p`) is best for scripted/CI tasks — include `--allow-tool` flags
+- Use `--allow-tool='shell(pytest)'` to let Copilot run pytest without asking each time
+- Plan mode (`Shift+Tab`) is great for complex multi-step tasks — Copilot builds a plan before writing code
+- If Copilot's output isn't right, refine your prompt with more context
 
 </details>
 
@@ -313,26 +320,23 @@ MCP servers give Copilot **tools** it can call — like opening a browser, click
 
 ### Setup
 
-1. **Install Playwright MCP:**
-   ```bash
-   npm install -g @anthropic/playwright-mcp
-   ```
-
-2. **Configure in VS Code:** Add to your `.vscode/mcp.json` (or user settings):
+1. **Configure Playwright MCP in VS Code:** Add to your `.vscode/mcp.json` (or user settings):
    ```json
    {
      "mcp": {
        "servers": {
          "playwright": {
            "command": "npx",
-           "args": ["@anthropic/playwright-mcp@latest"]
+           "args": ["@playwright/mcp@latest"]
          }
        }
      }
    }
    ```
 
-3. **Restart VS Code** and verify Playwright appears in Agent Mode's tool list (look for the tools icon).
+   > **Note:** Playwright MCP is a [Microsoft open-source project](https://github.com/microsoft/playwright-mcp). The npm package is `@playwright/mcp`.
+
+2. **Restart VS Code** and verify Playwright appears in Agent Mode's tool list (look for the tools icon).
 
 ### 7a: Discover available MCP tools (2 min)
 
@@ -398,7 +402,7 @@ You can extend your testing toolkit with additional MCP servers:
 
 | MCP Server | Use Case | Install |
 |-----------|----------|----------|
-| `@anthropic/playwright-mcp` | Browser E2E & a11y testing | `npx @anthropic/playwright-mcp@latest` |
+| `@playwright/mcp` | Browser E2E & a11y testing | `npx @playwright/mcp@latest` |
 | `@anthropic/fetch-mcp` | Dedicated HTTP/API testing | `npx @anthropic/fetch-mcp@latest` |
 
 To add **Fetch MCP**, add to your MCP config:
@@ -448,7 +452,7 @@ pytest tests/ --cov=order_processor --cov-report=term-missing -v
 - ✅ Copilot Agent Mode (VS Code) and CLI `task` agent to identify and fill coverage gaps autonomously
 - ✅ CI coverage gate with `--cov-fail-under` to make quality a hard requirement
 - ✅ GitHub Agentic Workflows for continuous, automated test improvement
-- ✅ GitHub Copilot CLI (`explain`, `suggest`, `task`) for terminal-first testing workflows
+- ✅ GitHub Copilot CLI (`copilot`) for interactive and programmatic terminal-first testing workflows
 - ✅ MCP servers (Playwright, Fetch) for E2E browser testing and API validation from Agent Mode
 
 ---

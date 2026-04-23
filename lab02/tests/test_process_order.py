@@ -17,6 +17,7 @@ Hints (try on your own first!):
   - For timeout: mock_post.side_effect = requests.Timeout()
 """
 
+import pytest
 import sqlite3
 from unittest.mock import patch, MagicMock
 import requests
@@ -54,14 +55,14 @@ class TestProcessOrder:
     def test_invalid_order_returns_errors(self):
         # TODO: Create an order with no items and call process_order.
         #       Assert status == "invalid" and "errors" key is present.
-        pass
+        pytest.skip("TODO: implement this test")
 
     # Path 2: DB save failure
     @patch("order_processor.requests.post")
     def test_db_save_failure(self, mock_post):
         # TODO: Pass a connection that has NO orders table so the INSERT fails.
         #       Assert status == "error".
-        pass
+        pytest.skip("TODO: implement this test")
 
     # Path 3: successful payment
     @patch("order_processor.requests.post")
@@ -69,18 +70,18 @@ class TestProcessOrder:
         # TODO: Make mock_post return a response whose .json() is {"id": "PAY-123"}.
         #       Don't forget .raise_for_status should do nothing (default mock).
         #       Assert status == "ok" and payment_id == "PAY-123".
-        pass
+        pytest.skip("TODO: implement this test")
 
     # Path 4: payment HTTP error (e.g. 402 Payment Required)
     @patch("order_processor.requests.post")
     def test_payment_http_error(self, mock_post):
         # TODO: Make .raise_for_status() raise requests.HTTPError("402").
         #       Assert status == "payment_failed".
-        pass
+        pytest.skip("TODO: implement this test")
 
     # Path 5: payment timeout
     @patch("order_processor.requests.post")
     def test_payment_timeout(self, mock_post):
         # TODO: Set mock_post.side_effect = requests.Timeout()
         #       Assert status == "payment_timeout".
-        pass
+        pytest.skip("TODO: implement this test")

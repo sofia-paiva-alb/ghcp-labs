@@ -9,7 +9,7 @@ import pytest
 from order_processor import Order, OrderItem, validate_order
 
 
-# Uses the make_order fixture from conftest.py (or define locally for standalone run)
+# Note: defined here for standalone runnability; in the lab, this lives in conftest.py
 @pytest.fixture
 def make_order():
     def _factory(**overrides):

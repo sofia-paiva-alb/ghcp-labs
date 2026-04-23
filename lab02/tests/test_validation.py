@@ -44,7 +44,7 @@ class TestValidateOrder:
 
     def test_valid_order_has_no_errors(self, make_order):
         # TODO: Create a valid order and assert validate_order returns []
-        pass
+        pytest.skip("TODO: implement this test")
 
     # TODO: Use @pytest.mark.parametrize to test these cases in ONE test function:
     #

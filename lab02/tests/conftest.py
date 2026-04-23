@@ -1,5 +1,5 @@
 """
-Shared fixtures for the lab1 test suite.
+Shared fixtures for the lab02 test suite.
 
 Part 2 task: Move your make_order factory fixture here so it can be
 used by ALL test files (test_process_order, test_validation, test_notify).
