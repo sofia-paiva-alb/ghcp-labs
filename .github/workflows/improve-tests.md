@@ -4,9 +4,10 @@ description: >
   Automatically identify and fill coverage gaps in the lab1 test suite.
   Runs pytest --cov, finds uncovered lines, and writes new tests.
 
-triggers:
-  - on: push
+on:
+  push:
     branches: [main]
+---
 
 steps:
   - name: Run coverage analysis
