@@ -1,18 +1,17 @@
 ---
 name: improve-tests
 description: >
-  Automatically identify and fill coverage gaps in the lab1 test suite.
+  Automatically identify and fill coverage gaps in the lab02 test suite.
   Runs pytest --cov, finds uncovered lines, and writes new tests.
 
 on:
-  push:
-    branches: [main]
+  workflow_dispatch:
 ---
 
 steps:
   - name: Run coverage analysis
     run: |
-      cd lab1
+      cd lab02
       pip install -r requirements.txt
       pytest tests/ --cov=order_processor --cov-report=json --cov-report=term-missing -v
 
